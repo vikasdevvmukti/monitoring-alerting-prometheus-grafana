@@ -125,17 +125,3 @@ While this runs, watch:
 - **Alerting → Alert rules** — the `High CPU Usage` rule should move from `Normal` → `Alerting` after ~2 minutes
 
 Once the `stress` command finishes, CPU usage drops and the alert automatically returns to `Normal` on the next evaluation cycle.
-
----
-
-### ⚠️ Troubleshooting & Lessons Learned
-
-1. **Disk full during Grafana install** (`No space left on device`): The default EC2 root volume ran out of space. Resized the EBS volume via AWS console, then extended the partition and filesystem:
-   ```bash
-   sudo growpart /dev/nvme0n1 1
-   sudo resize2fs /dev/nvme0n1p1
-   ```
-
-2. **Grafana port conflict:** Port 3000 was already in use by another app on the same instance. Changed Grafana to run on port 3001 via `grafana.ini`.
-
-3. **Newer Grafana UI threshold setup:** Grafana 13.x uses a query + "Reduce" + "Threshold" expression chain instead of a single dropdown. The threshold condition (`IS ABOVE`) is set inside the Threshold expression card, not directly under the query.
